@@ -60,7 +60,7 @@ footer{margin:48px 12px 0;color:var(--n600);font-size:12px}
 .ck ul{list-style:none;margin:2px 0 0;padding:0}.ck li{display:flex;gap:8px;font-size:13px;line-height:1.45;margin-top:3px}
 .ckh{font-size:12px;font-weight:600;color:var(--n800);text-transform:uppercase;letter-spacing:.06em}.ckh .n{color:var(--n600);font-weight:500}
 .mk{flex:0 0 16px;font-weight:700;text-align:center}.mk.ok{color:#1a7f37}.mk.half{color:#b7791f}.mk.no{color:var(--n600)}.mk.hard{color:#c0392b}
-.rq{color:var(--n800)}.why{display:none;color:var(--n600);font-size:12px}body.why .why{display:block}.job.why-off .why{display:none}.job.why-on .why{display:block}.more{position:relative}.whyb{all:unset;cursor:pointer;position:absolute;right:0;top:8px;font-size:12px;font-weight:600;color:var(--p600);border:1px solid var(--n300);border-radius:25px;padding:0 8px;line-height:18px}.whyb:hover{border-color:var(--p600)}.pf{color:var(--n600)}
+.rq{color:var(--n800)}.why{display:none;color:var(--n600);font-size:12px}body.showwhy .why{display:block}.job.why-off .why{display:none}.job.why-on .why{display:block}.more{position:relative}.whyb{all:unset;cursor:pointer;position:absolute;right:0;top:8px;font-size:12px;font-weight:600;color:var(--p600);border:1px solid var(--n300);border-radius:25px;padding:0 8px;line-height:18px}.whyb:hover{border-color:var(--p600)}.pf{color:var(--n600)}
 .verdict{display:inline-block;padding:0 8px;border-radius:25px;font-size:12px;font-weight:600;line-height:18px}
 .verdict.st{background:#e6f4ea;color:#1a7f37}.verdict.re{background:#fdf6e3;color:#7a5b0c}.verdict.ls{background:var(--n100);color:var(--n700)}
 .fitline{font-size:13px;margin-top:6px;cursor:pointer}.fitline b{font-weight:600}
@@ -153,9 +153,9 @@ function pareto(show){
 const tab=t=>{$("tRoles").classList.toggle("on",t==="roles");$("tPareto").classList.toggle("on",t!=="roles");$("board").hidden=t!=="roles";$("pareto").hidden=t==="roles";location.hash=t==="roles"?"":"pareto"};
 $("tRoles").onclick=()=>tab("roles"); $("tPareto").onclick=()=>tab("pareto");
 ["fDept","fLoc","fPay","fFit","fType","fCo","fRetail"].forEach(id=>$(id).addEventListener("change",render));
-$("board").addEventListener("click",e=>{if(e.target.closest("a"))return;const wb=e.target.closest(".whyb");if(wb){const c=wb.closest(".job"),on=c.classList.contains("why-on")||(document.body.classList.contains("why")&&!c.classList.contains("why-off"));c.classList.toggle("why-on",!on);c.classList.toggle("why-off",on);return}const r=e.target.closest(".job");if(r&&r.querySelector(".more"))r.classList.toggle("open")}); $("q").addEventListener("input",render);
+$("board").addEventListener("click",e=>{if(e.target.closest("a"))return;const wb=e.target.closest(".whyb");if(wb){const c=wb.closest(".job"),on=c.classList.contains("why-on")||(document.body.classList.contains("showwhy")&&!c.classList.contains("why-off"));c.classList.toggle("why-on",!on);c.classList.toggle("why-off",on);return}const r=e.target.closest(".job");if(r&&r.querySelector(".more"))r.classList.toggle("open")}); $("q").addEventListener("input",render);
 $("reset").addEventListener("click",()=>{["fDept","fLoc","fPay","fFit","fType","q"].forEach(id=>$(id).value="");$("fCo").value="tech";$("fRetail").checked=false;render()});
-$("fWhy").checked=localStorage.getItem("showWhy")==="1"; document.body.classList.toggle("why",$("fWhy").checked);
-$("fWhy").addEventListener("change",e=>{localStorage.setItem("showWhy",e.target.checked?"1":"0");document.body.classList.toggle("why",e.target.checked);document.querySelectorAll(".why-on,.why-off").forEach(c=>c.classList.remove("why-on","why-off"))});
+$("fWhy").checked=localStorage.getItem("showWhy")==="1"; document.body.classList.toggle("showwhy",$("fWhy").checked);
+$("fWhy").addEventListener("change",e=>{localStorage.setItem("showWhy",e.target.checked?"1":"0");document.body.classList.toggle("showwhy",e.target.checked);document.querySelectorAll(".why-on,.why-off").forEach(c=>c.classList.remove("why-on","why-off"))});
 render(); if(location.hash==="#pareto")tab("pareto");
 </script></body></html>
