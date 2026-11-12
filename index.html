@@ -91,7 +91,7 @@ footer{margin:48px 12px 0;color:var(--n600);font-size:12px}
 </div></div>
 <p id="hidden" class="hidden"></p>
 <label class="hidden toggle"><input type="checkbox" id="fRetail"> Show retail (<span id="nRetail"></span>)</label>
-<label class="hidden toggle"><input type="checkbox" id="fWhy"> Show why (one resume fact under each met or partly met requirement)</label>
+<label class="hidden toggle"><input type="checkbox" id="fWhy"> Show why on every role (opens every role's requirements, one resume fact under each met or partly met)</label>
 <div class="tabs"><button id="tRoles" class="on">All roles</button><button id="tPareto">Best trade-offs</button></div>
 <div id="board"></div>
 <div id="pareto" hidden></div>
@@ -125,7 +125,7 @@ function render(){
       const fitline=F.v||tot?`<div class="fitline">${F.v?`<span class="verdict ${F.v==="Strong"?"st":F.v==="Reach"?"re":"ls"}">${esc(F.v==="Strong"?"Strong fit":F.v)}</span> `:""}${tot?`<b>${esc(F.s)}</b> &middot; ${cnt} <span class="caret">&#9662;</span>`:""}</div>`:"";
       const checks=tot?`<div class="checks">${ck("Meets",F.m,"&#10003;","ok")}${ck("Partly",F.pt,"&#9680;","half")}${ck("Missing",gaps,"&#10007;","no")}</div>`:"";
       const more=tot||F.hf?`<div class="more">${tot&&(nm+(F.pt||[]).length)?'<button class="whyb" type="button">why</button>':""}${checks}${F.hf?`<div class="mh">Hard requirement</div><p class="note">${esc(F.hf)}</p>`:""}</div>`:"";
-      h+=`<div class="job${more?" expandable":""}"><a class="title" href="${esc(j.u)}" target="_blank" rel="noopener noreferrer">${esc(j.t)}</a>${fitline}<div class="details">${det}</div>`+
+      h+=`<div class="job${more?" expandable":""}${more&&document.body.classList.contains("showwhy")?" open":""}"><a class="title" href="${esc(j.u)}" target="_blank" rel="noopener noreferrer">${esc(j.t)}</a>${fitline}<div class="details">${det}</div>`+
          `<div class="comp">${j.p?esc(j.p):"Pay not listed"}${j.ph&&j.ph<90000?" &bull; under $90K":""} &bull; <a class="view" href="${esc(j.u)}" target="_blank" rel="noopener noreferrer">View posting &#8599;</a></div>`+
          (j.bn.length?`<div class="fits" title="${esc(j.bq)}"><b>Benefits:</b> ${esc(j.bn.join(", "))}</div>`:"")+more+`</div>`}
     h+="</div>"}
@@ -156,6 +156,6 @@ $("tRoles").onclick=()=>tab("roles"); $("tPareto").onclick=()=>tab("pareto");
 $("board").addEventListener("click",e=>{if(e.target.closest("a"))return;const wb=e.target.closest(".whyb");if(wb){const c=wb.closest(".job"),on=c.classList.contains("why-on")||(document.body.classList.contains("showwhy")&&!c.classList.contains("why-off"));c.classList.toggle("why-on",!on);c.classList.toggle("why-off",on);return}const r=e.target.closest(".job");if(r&&r.querySelector(".more"))r.classList.toggle("open")}); $("q").addEventListener("input",render);
 $("reset").addEventListener("click",()=>{["fDept","fLoc","fPay","fFit","fType","q"].forEach(id=>$(id).value="");$("fCo").value="tech";$("fRetail").checked=false;render()});
 $("fWhy").checked=localStorage.getItem("showWhy")==="1"; document.body.classList.toggle("showwhy",$("fWhy").checked);
-$("fWhy").addEventListener("change",e=>{localStorage.setItem("showWhy",e.target.checked?"1":"0");document.body.classList.toggle("showwhy",e.target.checked);document.querySelectorAll(".why-on,.why-off").forEach(c=>c.classList.remove("why-on","why-off"))});
+$("fWhy").addEventListener("change",e=>{localStorage.setItem("showWhy",e.target.checked?"1":"0");document.body.classList.toggle("showwhy",e.target.checked);render()});
 render(); if(location.hash==="#pareto")tab("pareto");
 </script></body></html>
